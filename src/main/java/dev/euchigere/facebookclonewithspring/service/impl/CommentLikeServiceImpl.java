@@ -8,12 +8,14 @@ import dev.euchigere.facebookclonewithspring.service.CommentLikeService;
 import dev.euchigere.facebookclonewithspring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-
 import static dev.euchigere.facebookclonewithspring.controller.IndexController.userCommentLikesList;
 import static dev.euchigere.facebookclonewithspring.controller.LoginController.currentUser;
 
+/**
+ * CommentLikeServiceImpl
+ * implement commentLikeService
+ */
 @Service
 public class CommentLikeServiceImpl implements CommentLikeService {
     @Autowired
@@ -21,8 +23,10 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     @Autowired
     CommentService commentService;
 
+    // implements method to find all commentId of comments user liked
     public void findAllCommentIdUserLiked() {
         userCommentLikesList = new ArrayList<>();
+        // the Ids are added to userCommentLikesList
         userCommentLikesList.addAll(
                 commentLikeRepo.findAllCommentLikeIdByUserId(currentUser.getId())
         );
