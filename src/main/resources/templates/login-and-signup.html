@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/styles/main.css}">
+  <title>Sign In / Sign Up</title>
+</head>
+<body>
+  <main class="login">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 left-side">
+          <h1 class="display-3 fbblue-color">
+            facebook
+          </h1>
+          <div class="text-left">
+            Facebook helps you connect and share <br> with the people in your life.
+          </div>
+        </div>
+        <div class="col-md-5">
+          <form method="POST" action="#" th:action="@{/auth/login_user}">
+            <div class="text-center text-success" th:if="${flashMessage != null}" th:text="${flashMessage}"></div>
+            <div class="text-center text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+            <div class="form-group">
+              <input type="email" placeholder="Email address or phone number"
+                     class="form-control form-control-lg" name="login-email" th:name="login-email" id="login-email" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+              <input placeholder="Password" name="login-password" th:name="login-password" type="password" class="form-control form-control-lg"
+                     id="login-password">
+            </div>
+            <button type="submit" class="btn btn-primary fbblue-bg btn-lg btn-block">Log In</button>
+            <hr>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal"
+                    data-target="#staticBackdrop">
+              Create New Account
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  <!--Registration Modal -->
+  <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Sign Up</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="modal-body" action="#" th:action="@{/auth/add_user}" th:object="${user}" method="POST">
+          <div class="row">
+            <div class="col-6 form-group">
+              <input type="text" required name="firstname-reg" th:field="*{firstName}" class="form-control" placeholder="First name">
+            </div>
+            <div class="col-6 form-group">
+              <input type="text" required name="lastname-reg" th:field="*{lastName}" class="form-control" placeholder="Last name">
+            </div>
+            <div class="col-6 form-group">
+              <input type="email" required name="email-reg" th:field="*{email}" class="form-control" placeholder="Email address">
+            </div>
+            <div class="col-6 form-group">
+              <input type="tel" required name="mobile-reg" class="form-control" placeholder="Mobile number">
+            </div>
+            <div class="col-6 form-group">
+              <input id="password" type="password" class="form-control" name="password-reg" th:field="*{password}" required  placeholder="New password"
+                     aria-describedby="passwordHelpBlock" minlength="8">
+            </div>
+            <div class="col-6 form-group">
+              <input id="confirm-password" type="password" class="form-control" required name="confirm-password-reg" placeholder="Confirm password"
+                     aria-describedby="passwordHelpBlock" minlength="8">
+            </div>
+            <small class="col-12 form-text text-muted"  id="passwordHelpBlock">
+              Your password must be 8-20 characters long, contain letters and numbers, and must not
+              contain spaces, special characters, or emoji.
+            </small>
+            <div class="col-12 form-group">
+              <label style="font-size: 0.8rem;" class="text-muted" for="reg-birthdate">Date of
+                Birth</label>
+              <input type="date" id="reg-birthdate" max="2004-01-01" required class="form-control" name="birthdate-reg" th:field="*{dob}" placeholder="dd/mm/yyyy">
+            </div>
+
+            <div class="col-12">
+              <label style="font-size: 0.8rem;" class="text-muted">Gender</label>
+            </div>
+            <div class="col-4 form-group mr-2 custom-radio">
+              <label class="radio-label text-muted" for="genderMale">Male</label>
+              <input type="radio" value="Male" th:field="*{gender}" required id="genderMale" name="sex-reg" class="radio-button">
+            </div>
+            <div class="col-4 form-group custom-radio">
+              <label class="radio-label text-muted" for="genderFemale">Female</label>
+              <input type="radio" value="Female" th:field="*{gender}" required id="genderFemale" name="sex-reg" class="radio-button">
+            </div>
+
+          </div>
+          <small class="form-text text-muted">
+            By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy. You may receive SMS
+            notifications from us and can opt out at any time.
+          </small>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+          integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" th:src="@{/script/action.js}"></script>
+</body>
+</html>

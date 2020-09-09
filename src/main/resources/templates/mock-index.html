@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+    <h1>Hello world</h1>
+  </body>
+  <th:block th:switch="${user == null}">
+    <div th:case="false" th:text="${user.firstName}">
+      <!-- print object is not active -->
+      Welcome user!
+    </div>
+    <div th:case="true">
+      <!-- print object is not active -->
+      No user
+    </div>
+  </th:block>
+
+  <form action="#" th:action="@{/addUser}">
+
+  </form>
+</html>
