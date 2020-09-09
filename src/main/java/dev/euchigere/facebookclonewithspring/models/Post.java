@@ -8,6 +8,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * post model
+ * Has many to one relationship with user
+ * Has one to many relationship with comment and postLike
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

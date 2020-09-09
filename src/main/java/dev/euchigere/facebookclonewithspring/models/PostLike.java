@@ -4,6 +4,10 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * postLike model
+ * Has many to one relationship with post and user
+ */
 @Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"post_id", "user_id"})})

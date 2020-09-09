@@ -3,6 +3,10 @@ package dev.euchigere.facebookclonewithspring.models;
 import lombok.Data;
 import javax.persistence.*;
 
+/**
+ * commentLike model
+ * Has many to one relationship with user and comment
+ */
 @Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"comment_id", "user_id"})})

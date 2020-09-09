@@ -127,6 +127,7 @@ public class CommentController {
             @PathVariable("id") Long commentId,
             @RequestHeader(value = "referer") String referer
     ) {
+        // validate session
         if (currentUser == null) {
             return "redirect:/auth/login";
         }
