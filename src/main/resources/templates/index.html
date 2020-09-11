@@ -67,10 +67,10 @@
                            th:style="'background-image: url(' + @{/images/user.svg} + ');'">
                       </div>
                       <div class="col-7 mr-0 mr-md-auto">
-                        <a th:href="@{/profile{id}(id=${post.user.id})}">
+                        <a th:href="@{/profile/{id}(id=${post.user.id})}">
                         <h5 class="user-name" th:text="${post.user.firstName + ' ' + post.user.lastName}"></h5>
                         </a>
-                        <p class="post-date" th:text="${post.createdAt}"></p>
+                        <p class="post-date" th:text="${post.getDuration()}"></p>
                       </div>
                           <!-- EDIT DROP DOWN CONTAINER -->
                         <div class="dropdown col-2" th:if="${post.user.id == currentUser.id}">

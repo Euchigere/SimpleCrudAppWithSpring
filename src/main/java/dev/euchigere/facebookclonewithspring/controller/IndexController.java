@@ -2,6 +2,7 @@ package dev.euchigere.facebookclonewithspring.controller;
 
 import dev.euchigere.facebookclonewithspring.dto.ResponseObject;
 import dev.euchigere.facebookclonewithspring.models.Post;
+import dev.euchigere.facebookclonewithspring.models.User;
 import dev.euchigere.facebookclonewithspring.service.CommentLikeService;
 import dev.euchigere.facebookclonewithspring.service.PostLikeService;
 import dev.euchigere.facebookclonewithspring.service.PostService;
@@ -84,12 +85,18 @@ public class IndexController {
      */
     @GetMapping("profile/{id}")
     public String displayUserProfile(
-            @PathVariable("id") Long userId
+            @PathVariable("id") Long userId,
+            Model model
     ) {
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        postLikeService.findAllPostIdUserLiked();
+        model.addAttribute("user", userService.findUserById(userId));
+        model.addAttribute("userPostLikesList", userPostLikesList);
+        model.addAttribute("id", currentUser.getId());
 
-
-        // Todo displayProfile
-        return "redirect:/";
+        return "profile";
     }
 
     /**
@@ -97,11 +104,16 @@ public class IndexController {
      * @return
      */
     @GetMapping("profile")
-    public String displayCurrentUserProfile() {
+    public String displayCurrentUserProfile(Model model) {
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        postLikeService.findAllPostIdUserLiked();
+        model.addAttribute("user", userService.findUserById(currentUser.getId()));
+        model.addAttribute("userPostLikesList", userPostLikesList);
+        model.addAttribute("id", currentUser.getId());
 
-
-        // Todo displayProfile
-        return "redirect:/";
+        return "profile";
     }
 
     /**

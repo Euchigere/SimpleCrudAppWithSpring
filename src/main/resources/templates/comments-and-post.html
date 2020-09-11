@@ -52,10 +52,10 @@
                      th:style="'background-image: url(' + @{/images/user.svg} + ');'">
                 </div>
                 <div class="col-7 mr-0 mr-md-auto">
-                  <a th:href="@{/profile/{id}(id=${post.id})}">
+                  <a th:href="@{/profile/{id}(id=${post.user.id})}">
                   <h5 class="user-name" th:text="${post.user.firstName + ' ' + post.user.lastName}"></h5>
                   </a>
-                  <p class="post-date" th:text="${post.createdAt}"></p>
+                  <p class="post-date" th:text="${post.getDuration()}"></p>
                 </div>
                   <div class="dropdown col-2" th:if="${post.user.id == currentUser.id}">
                     <!-- EDIT DROP DOWN BUTTON -->
@@ -104,10 +104,10 @@
                          th:style="'background-image: url(' + @{/images/user.svg} + ');'">
                     </div>
                     <div class="col-7 mr-0 mr-md-auto">
-                      <a th:href="@{/profile{id}(id=${comment.user.id})}">
+                      <a th:href="@{/profile/{id}(id=${comment.user.id})}">
                       <h5 class="user-name" th:text="${comment.user.firstName + ' ' + comment.user.lastName}"></h5>
                       </a>
-                      <p class="comment-date" th:text="${comment.createdAt}"></p>
+                      <p class="comment-date" th:text="${comment.getDuration()}"></p>
                     </div>
                     <div class="dropdown col-2" th:if="${comment.user.id == currentUser.id}">
                         <!-- EDIT DROP DOWN BUTTON -->

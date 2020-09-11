@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/styles/main.css}">
+  <script src="https://kit.fontawesome.com/36a5ffd25f.js" crossorigin="anonymous"></script>
+  <title>Profile</title>
+</head>
+<body>
+  <div id="content">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <a class="navbar-brand" href="/"><i class="fab fa-facebook"></i></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="form-inline my-2 my-lg-0 mr-auto">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button disabled class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/profile"><i class="nav-icons fas fa-user"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout"><i class="nav-icons fas fa-sign-out-alt"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main class="profile">
+      <div class="container-fluid top-profile-section">
+        <div class="profile-bg container" style="background-image: url(./jsp/static-files/images/user.svg);">
+          <div class="profile-image" th:style="'background-image: url(' + @{/images/user.svg} + ');'">
+          </div>
+        </div>
+        <section class="about pt-2 container">
+          <div class="profile-name text-center" th:text="${user.firstName + ' ' + user.lastName}"></div>
+        </section>
+        <nav class="nav justify-content-center container bottom-boder pt-2">
+
+          <li class="nav-item px-1 px-md-3" th:text="${'Email: ' + user.email}"></li>
+          <li class="nav-item px-1 px-md-3" th:text="${'Gender: ' + user.gender}"></li>
+        </nav>
+      </div>
+
+      <section class="container bottom-profile-section mt-1">
+        <div class="row">
+
+          <!-- populate profile page with user posts in the data base-->
+            <section id="posts" class="col-12 col-md-8 mx-auto" th:each="post, iterStat : ${user.posts}">
+              <div class="card  mt-2" style="width: 100%; padding: 1rem">
+                <div class="card-body">
+                  <!-- POST HEADER -->
+                  <div class="post-header row">
+                    <div class="post-profile-image col-3"
+                         th:style="'background-image: url(' + @{/images/user.svg} + ');'">
+                    </div>
+                    <div class="col-7 mr-0 mr-md-auto">
+                      <a th:href="@{/profile{id}(id=${user.id})}">
+                      <h5 class="user-name" th:text="${user.firstName + ' ' + user.lastName}"></h5>
+                      </a>
+                      <p class="post-date" th:text="${post.getDuration()}"></p>
+                    </div>
+                      <div class="dropdown col-2" th:if="${user.id == id}">
+                        <!-- EDIT DROP DOWN BUTTON -->
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ...
+                        </button>
+                        <form action="#" th:action="@{/post/delete_post/{id}(id=${post.id})}"
+                          method="POST" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                          <button th:attr="post-access-id=${'post-area' + iterStat.index}, post-id=${post.id}"
+                            class="dropdown-item" data-toggle="modal" data-target="#postEditModal" type="button" >Edit</button>
+                          <button class="dropdown-item" type="submit">Delete</button>
+                        </form>
+                      </div>
+                  </div>
+                  <hr>
+                  <!-- POST TEXT? CONTENT -->
+                  <div th:attr="id=${user.id == id}?'post-area' + ${iterStat.index}"
+                       class="text-justify post-area" th:text="${post.text}">
+                  </div>
+                <div class="post-stat row mt-1">
+                  <div class="col-auto mr-auto text-muted mt-1 pl-0" th:switch="${#strings.contains(userPostLikesList, post.id)}">
+                    <span th:text="${#lists.size(post.postLikes)}"></span>
+                    <!-- check whether the user has liked the post and displays appropriate thumb color-->
+                    <a th:case="true" th:href="@{/post/unlike_post/{id}(id=${post.id})}">
+                      <span><i style="color: #FF6347;" class="fas fa-thumbs-up"></i></span>
+                    </a>
+                    <a th:case="false" th:href="@{/post/like_post/{id}(id=${post.id})}">
+                      <span><i style="color: #D3D3D3;" class="fas fa-thumbs-up"></i></span></a>
+                  </div>
+                  <div class="col-auto text-muted">
+
+                    <!-- link to post-page -->
+                    <a th:href="@{/view_comments/{id}(id=${post.id})}" th:text="${#lists.size(post.comments) + ' Comments'}">#Comments</a>
+                  </div>
+
+                </div>
+                <hr>
+              </div>
+              <form action="#" th:action="@{/comment/create_comment/{id}(id=${post.id})}"  method="POST">
+                <div class="form-group col-12 mr-auto ml-auto comment-textarea">
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="comment-text" placeholder="write a comment"></textarea>
+                </div>
+                <button class="btn btn-primary ml-3" type="submit">Comment</button>
+              </form>
+        </div>
+      </section>
+  </div>
+  </section>
+  </main>
+
+
+  <!--EDIT BIO Modal -->
+  <div class="modal fade" id="editBioModal" tabindex="-1" aria-labelledby="editBioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBioModalLabel">Edit Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="modal-body row">
+          <div class="form-group col-12">
+            <label class="text-muted" for="edit-bio">Edit Bio</label>
+            <textarea class="form-control" id="edit-bio" rows="3"></textarea>
+          </div>
+          <div class="col-6 form-group">
+            <input type="text" class="form-control" placeholder="First name">
+          </div>
+          <div class="col-6 form-group">
+            <input type="text" class="form-control" placeholder="Last name">
+          </div>
+        </form>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <footer class="my-footer"><div>Icons made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+          integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" th:src="@{/script/action.js}"></script>
+</body>
+</html>
